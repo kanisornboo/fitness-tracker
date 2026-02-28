@@ -1,0 +1,12 @@
+dist
+node_modules
+build
+coverage
+dist-ssr
+*.local
+.vscode
+.eslintrc.js
+.eslintignore
+.prettierrc
+.prettierignore
+.gitignore
