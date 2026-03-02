@@ -1,5 +1,5 @@
-import { dummyUser, dummyFoodLogs, dummyActivityLogs } from "../assets/assets";
-import type { UserData, FoodEntry, ActivityEntry, FormData } from "../types";
+import { dummyActivityLogs, dummyFoodLogs, dummyUser } from '../assets/assets';
+import type { ActivityEntry, FoodEntry, UserData } from './types';
 
 interface DB {
     user: any;
@@ -13,7 +13,7 @@ const getDB = (): DB => {
         const initialDB: DB = {
             user: null,
             foodLogs: [],
-            activityLogs: [],
+            activityLogs: []
         };
         return initialDB;
     }
@@ -30,13 +30,15 @@ const mockApi = {
     auth: {
         login: async (credentials: any) => {
             await delay(500);
-            let db = getDB();
+            const db = getDB();
 
             if (!db.user) {
                 db.user = {
                     ...dummyUser,
                     email: credentials.identifier || credentials.email,
-                    username: (credentials.identifier || credentials.email).split('@')[0],
+                    username: (
+                        credentials.identifier || credentials.email
+                    ).split('@')[0]
                 };
                 db.foodLogs = [...dummyFoodLogs];
                 db.activityLogs = [...dummyActivityLogs];
@@ -45,8 +47,8 @@ const mockApi = {
             return {
                 data: {
                     user: db.user,
-                    jwt: "mock_jwt_token_" + Date.now(),
-                },
+                    jwt: 'mock_jwt_token_' + Date.now()
+                }
             };
         },
         register: async (credentials: any) => {
@@ -54,16 +56,16 @@ const mockApi = {
             const db = getDB();
 
             db.user = {
-                id: "user_" + Date.now(),
+                id: 'user_' + Date.now(),
                 username: credentials.username,
                 email: credentials.email,
                 age: 0,
                 weight: 0,
                 height: 0,
-                goal: "maintain",
+                goal: 'maintain',
                 dailyCalorieIntake: 2000,
                 dailyCalorieBurn: 400,
-                createdAt: new Date().toISOString(),
+                createdAt: new Date().toISOString()
             };
             db.foodLogs = [];
             db.activityLogs = [];
@@ -72,8 +74,8 @@ const mockApi = {
             return {
                 data: {
                     user: db.user,
-                    jwt: "mock_jwt_token_" + Date.now(),
-                },
+                    jwt: 'mock_jwt_token_' + Date.now()
+                }
             };
         }
     },
@@ -104,12 +106,12 @@ const mockApi = {
             const db = getDB();
             const newEntry: FoodEntry = {
                 id: Date.now(),
-                documentId: "doc_food_" + Date.now(),
+                documentId: 'doc_food_' + Date.now(),
                 name: payload.data.name,
                 calories: payload.data.calories,
                 mealType: payload.data.mealType,
-                date: new Date().toISOString().split("T")[0],
-                createdAt: new Date().toISOString(),
+                date: new Date().toISOString().split('T')[0],
+                createdAt: new Date().toISOString()
             };
             db.foodLogs.push(newEntry);
             saveDB(db);
@@ -118,7 +120,9 @@ const mockApi = {
         delete: async (documentId: string) => {
             await delay(300);
             const db = getDB();
-            db.foodLogs = db.foodLogs.filter(f => f.documentId !== documentId);
+            db.foodLogs = db.foodLogs.filter(
+                (f) => f.documentId !== documentId
+            );
             saveDB(db);
             return { data: { id: documentId } };
         }
@@ -129,17 +133,19 @@ const mockApi = {
             const db = getDB();
             return { data: db.activityLogs };
         },
-        create: async (payload: { data: { name: string; duration: number; calories: number } }) => {
+        create: async (payload: {
+            data: { name: string; duration: number; calories: number };
+        }) => {
             await delay(300);
             const db = getDB();
             const newEntry: ActivityEntry = {
                 id: Date.now(),
-                documentId: "doc_act_" + Date.now(),
+                documentId: 'doc_act_' + Date.now(),
                 name: payload.data.name,
                 duration: payload.data.duration,
                 calories: payload.data.calories,
-                date: new Date().toISOString().split("T")[0],
-                createdAt: new Date().toISOString(),
+                date: new Date().toISOString().split('T')[0],
+                createdAt: new Date().toISOString()
             };
             db.activityLogs.push(newEntry);
             saveDB(db);
@@ -148,7 +154,9 @@ const mockApi = {
         delete: async (documentId: string) => {
             await delay(300);
             const db = getDB();
-            db.activityLogs = db.activityLogs.filter(a => a.documentId !== documentId);
+            db.activityLogs = db.activityLogs.filter(
+                (a) => a.documentId !== documentId
+            );
             saveDB(db);
             return { data: { id: documentId } };
         }
@@ -157,10 +165,10 @@ const mockApi = {
         analyze: async (_formData: any) => {
             await delay(1500);
             const foods = [
-                { name: "Apple", calories: 95 },
-                { name: "Banana", calories: 105 },
-                { name: "Avocado Toast", calories: 250 },
-                { name: "Pizza Slice", calories: 300 },
+                { name: 'Apple', calories: 95 },
+                { name: 'Banana', calories: 105 },
+                { name: 'Avocado Toast', calories: 250 },
+                { name: 'Pizza Slice', calories: 300 }
             ];
             const randomFood = foods[Math.floor(Math.random() * foods.length)];
             return {
