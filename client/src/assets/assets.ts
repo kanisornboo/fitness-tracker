@@ -10,7 +10,7 @@ import {
   Timer,
   Waves
 } from 'lucide-react';
-import type { ActivityEntry, FoodEntry, UserData } from '../types';
+import type { ActivityEntry, FoodEntry, UserData } from './types';
 
 export const dummyUser: UserData & {
   id: string;
