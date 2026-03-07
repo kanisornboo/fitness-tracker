@@ -102,7 +102,7 @@ const Dashboard = () => {
 
         {/* Motivation pill */}
         <div className="mt-4 inline-flex items-center gap-2.5 rounded-full border border-emerald-500/25 bg-emerald-500/8 dark:bg-emerald-400/8 px-4 py-2 backdrop-blur-sm">
-          <span className="text-lg leading-none">{motivationMessage?.emoji}</span>
+          <span aria-hidden="true" className="text-lg leading-none">{motivationMessage?.emoji}</span>
           <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
             {motivationMessage?.text}
           </p>
@@ -147,7 +147,7 @@ const Dashboard = () => {
             </div>
             <span
               className="text-sm"
-              style={{ color: remainingCalories < 0 ? 'red' : 'green' }}>
+              style={{ color: remainingCalories < 0 ? '#dc2626' : '#16a34a' }}>
               {Math.round((totalCalories / DAILY_CALORIES_LIMIT) * 100)}%
             </span>
           </div>
@@ -298,6 +298,7 @@ const Dashboard = () => {
                   <span
                     className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full ${cfg.onTrack ? 'bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400' : 'bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400'}`}>
                     <span
+                      aria-hidden="true"
                       className={`size-1.5 rounded-full inline-block ${cfg.onTrack ? 'bg-emerald-500' : 'bg-red-500'}`}
                     />
                     {cfg.statusText}
@@ -325,7 +326,7 @@ const Dashboard = () => {
                   </div>
 
                   {/* mini ring */}
-                  <svg width="52" height="52" className="-rotate-90 shrink-0">
+                  <svg aria-hidden="true" width="52" height="52" className="-rotate-90 shrink-0">
                     <circle
                       cx="26"
                       cy="26"

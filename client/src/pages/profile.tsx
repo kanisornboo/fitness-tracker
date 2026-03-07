@@ -115,7 +115,7 @@ const Profile = () => {
         <h1 className="text-2xl font-bold text-slate-800 dark:text-white">
           Profile
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Manage your profile information and settings.
         </p>
       </div>
@@ -126,7 +126,7 @@ const Profile = () => {
           {/* card title */}
           <div className="flex items-center gap-4 mb-6">
             <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-              <UserIcon className="size-6 text-emerald-500 dark:text-emerald-400" />
+              <UserIcon aria-hidden="true" className="size-6 text-emerald-500 dark:text-emerald-400" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-800 dark:text-white">
@@ -216,6 +216,7 @@ const Profile = () => {
                 <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
                   <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
                     <Calendar
+                      aria-hidden="true"
                       size={24}
                       className="text-slate-500 dark:text-slate-400"
                     />
@@ -235,6 +236,7 @@ const Profile = () => {
                 <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
                   <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
                     <ScaleIcon
+                      aria-hidden="true"
                       size={24}
                       className="text-slate-500 dark:text-slate-400"
                     />
@@ -255,6 +257,7 @@ const Profile = () => {
                   <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
                     <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
                       <RulerIcon
+                        aria-hidden="true"
                         size={24}
                         className="text-slate-500 dark:text-slate-400"
                       />
@@ -275,6 +278,7 @@ const Profile = () => {
                 <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
                   <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
                     <TargetIcon
+                      aria-hidden="true"
                       size={24}
                       className="text-slate-500 dark:text-slate-400"
                     />
@@ -319,7 +323,7 @@ const Profile = () => {
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               {/* food entries count */}
               <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <HamburgerIcon className="size-6 text-slate-500 dark:text-slate-400" />
+                <HamburgerIcon aria-hidden="true" className="size-6 text-slate-500 dark:text-slate-400" />
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -332,7 +336,7 @@ const Profile = () => {
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <FlameIcon className="size-6 text-slate-500 dark:text-slate-400" />
+                <FlameIcon aria-hidden="true" className="size-6 text-slate-500 dark:text-slate-400" />
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -345,7 +349,7 @@ const Profile = () => {
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <FlameIcon className="size-6 text-slate-500 dark:text-slate-400" />
+                <FlameIcon aria-hidden="true" className="size-6 text-slate-500 dark:text-slate-400" />
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -358,7 +362,7 @@ const Profile = () => {
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <FlameIcon className="size-6 text-slate-500 dark:text-slate-400" />
+                <FlameIcon aria-hidden="true" className="size-6 text-slate-500 dark:text-slate-400" />
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -371,7 +375,7 @@ const Profile = () => {
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <FlameIcon className="size-6 text-slate-500 dark:text-slate-400" />
+                <FlameIcon aria-hidden="true" className="size-6 text-slate-500 dark:text-slate-400" />
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -390,7 +394,7 @@ const Profile = () => {
               onClick={logout}
               variant="danger"
               className="w-full flex items-center justify-center gap-2 mt-4 bg-red-500 dark:bg-red-900/20 text-white dark:text-red-400 hover:bg-red-600 dark:hover:bg-red-800 focus:ring-red-400">
-              <LogOutIcon className="size-5" />
+              <LogOutIcon aria-hidden="true" className="size-5" />
               <span className="text-sm font-medium">Logout</span>
             </Button>
           </div>
@@ -401,13 +405,13 @@ const Profile = () => {
           <Button
             onClick={toggleTheme}
             variant="secondary"
+            aria-pressed={theme === 'dark'}
+            aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
             className="w-full flex items-center justify-center gap-2 bg-linear-to-r from-emerald-500 to-emerald-400 dark:from-emerald-400 dark:to-emerald-500 text-white">
-            <span className="text-sm font-medium">
-              {theme === 'light'
-                ? 'Switch to dark mode'
-                : 'Switch to light mode'}
+            <span aria-hidden="true" className="text-sm font-medium">
+              {theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
             </span>
-            <SunIcon className="size-5" />
+            <SunIcon aria-hidden="true" className="size-5" />
           </Button>
         </div>
 
@@ -416,7 +420,7 @@ const Profile = () => {
           <Button
             onClick={logout}
             className="w-full flex items-center justify-center gap-2 bg-red-500 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 focus:ring-red-400">
-            <LogOutIcon className="size-5" />
+            <LogOutIcon aria-hidden="true" className="size-5" />
             <span className="text-sm font-medium">Logout</span>
           </Button>
         </div>

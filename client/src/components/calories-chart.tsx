@@ -3,6 +3,7 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
+  Legend,
   Tooltip,
   XAxis,
   YAxis
@@ -50,19 +51,54 @@ const CaloriesChart = () => {
 
   return (
     <div className="w-full mt-4">
-      <AreaChart responsive data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis width={60} />
-        <Tooltip />
-        <Area
-          type="monotone"
-          dataKey="Intake"
-          stroke="#8884d8"
-          fill="#8884d8"
-        />
-        <Area type="monotone" dataKey="Burn" stroke="#82ca9d" fill="#82ca9d" />
-      </AreaChart>
+      <div
+        role="img"
+        aria-label="Calories chart: calorie intake vs calories burned over the last 7 days">
+        <AreaChart responsive data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis width={60} />
+          <Tooltip />
+          <Legend />
+          <Area
+            type="monotone"
+            dataKey="Intake"
+            name="Calories Intake"
+            stroke="#8884d8"
+            fill="#8884d8"
+            strokeDasharray="0"
+          />
+          <Area
+            type="monotone"
+            dataKey="Burn"
+            name="Calories Burned"
+            stroke="#22c55e"
+            fill="#22c55e"
+            strokeDasharray="4 2"
+          />
+        </AreaChart>
+      </div>
+
+      {/* Screen-reader accessible data table */}
+      <table className="sr-only">
+        <caption>Calories intake and burned over the last 7 days</caption>
+        <thead>
+          <tr>
+            <th scope="col">Day</th>
+            <th scope="col">Calories Intake (kcal)</th>
+            <th scope="col">Calories Burned (kcal)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row) => (
+            <tr key={row.date}>
+              <td>{row.name}</td>
+              <td>{row.Intake}</td>
+              <td>{row.Burn}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

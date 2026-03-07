@@ -163,8 +163,8 @@ const ActivityLog = () => {
                   <button
                     key={activity.name}
                     onClick={() => handleQuickAdd(activity)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-700/80 dark:bg-green-900/80 text-white hover:bg-green-800 dark:hover:bg-green-800 transition-colors duration-200 cursor-pointer">
-                    <activity.icon size={18} />
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-700/80 dark:bg-green-900/80 text-white hover:bg-green-800 dark:hover:bg-green-800 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-700">
+                    <activity.icon aria-hidden="true" size={18} />
                     <span className="text-base font-medium capitalize text-white">
                       {activity.name}
                     </span>
@@ -224,7 +224,7 @@ const ActivityLog = () => {
                 />
               </div>
 
-              {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+              {error && <p role="alert" className="text-red-500 text-sm mt-2">{error}</p>}
 
               <div className="flex gap-2 pt-2 justify-end">
                 <Button
@@ -309,9 +309,10 @@ const ActivityLog = () => {
                       </p>
                     </div>
                     <button
-                      className="flex items-center gap-2 text-sm text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200 cursor-pointer"
+                      aria-label={`Delete ${activity.name}`}
+                      className="flex items-center gap-2 text-sm text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-red-500 rounded"
                       onClick={() => handleDelete(activity.documentId)}>
-                      <Trash2Icon className="size-4 text-red-500 dark:text-slate-400" />
+                      <Trash2Icon aria-hidden="true" className="size-4 text-red-500 dark:text-slate-400" />
                     </button>
                   </div>
                 </div>

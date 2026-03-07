@@ -234,8 +234,8 @@ const FoodLog = () => {
                           | 'snack'
                       )
                     }
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-700/80 dark:bg-green-900/80 text-white hover:bg-green-800 dark:hover:bg-green-800 transition-colors duration-200 cursor-pointer">
-                    <span className="text-lg">{activity.emoji}</span>
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-700/80 dark:bg-green-900/80 text-white hover:bg-green-800 dark:hover:bg-green-800 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-700">
+                    <span aria-hidden="true" className="text-lg">{activity.emoji}</span>
                     <span className="text-base font-medium">
                       {activity.name}
                     </span>
@@ -271,10 +271,12 @@ const FoodLog = () => {
                 className="hidden"
                 accept="image/*"
                 ref={inputRef}
+                aria-label="Upload food image for AI analysis"
+                tabIndex={-1}
               />
 
               {error && (
-                <p className="text-sm text-red-500 dark:text-red-400">
+                <p role="alert" className="text-sm text-red-500 dark:text-red-400">
                   Error: {error}
                 </p>
               )}
@@ -407,11 +409,12 @@ const FoodLog = () => {
                             {entry.calories} kcal
                           </span>
                           <button
-                            className="flex items-center gap-2 text-sm text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200 cursor-pointer"
+                            aria-label={`Delete ${entry.name}`}
+                            className="flex items-center gap-2 text-sm text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-red-500 rounded"
                             onClick={() =>
                               handleDelete(entry.documentId as string)
                             }>
-                            <Trash2Icon className="size-4 text-red-500 dark:text-slate-400" />
+                            <Trash2Icon aria-hidden="true" className="size-4 text-red-500 dark:text-slate-400" />
                           </button>
                         </div>
                       </div>
