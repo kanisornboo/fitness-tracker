@@ -1,4 +1,4 @@
-import { isValidEmailFormat } from '@/lib/utils';
+import { loginSchema, signupSchema } from '@/lib/schemas';
 import {
   AtSignIcon,
   EyeIcon,
@@ -35,16 +35,25 @@ export const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+
     if (state === 'login') {
-      if (!isValidEmailFormat(email)) {
-        toast.error('Invalid email format');
+      const result = loginSchema.safeParse({ email, password });
+      if (!result.success) {
+        toast.error(result.error.issues[0].message);
         setIsSubmitting(false);
         return;
       }
       await login({ email, password });
     } else {
+      const result = signupSchema.safeParse({ username, email, password });
+      if (!result.success) {
+        toast.error(result.error.issues[0].message);
+        setIsSubmitting(false);
+        return;
+      }
       await signup({ username, email, password });
     }
+
     setIsSubmitting(false);
   };
 

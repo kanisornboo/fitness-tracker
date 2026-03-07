@@ -1,5 +1,6 @@
 import { mealTypeOptions, quickActivitiesFoodLog } from '@/assets/assets';
 import type { FoodEntry } from '@/assets/types';
+import { foodLogSchema } from '@/lib/schemas';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Input from '@/components/ui/Input';
@@ -79,12 +80,10 @@ const FoodLog = () => {
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (
-      !formData.name.trim() ||
-      formData.calories <= 0 ||
-      !formData.mealType.trim()
-    ) {
-      return toast.error('Please fill in all fields');
+    const result = foodLogSchema.safeParse(formData);
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+      return;
     }
 
     try {
@@ -340,12 +339,7 @@ const FoodLog = () => {
                     Cancel
                   </Button>
                   <Button
-                    disabled={
-                      loading ||
-                      !formData.name.trim() ||
-                      formData.calories <= 0 ||
-                      !formData.mealType.trim()
-                    }
+                    disabled={loading || !foodLogSchema.safeParse(formData).success}
                     type="submit"
                     variant="primary"
                     className="flex-1">

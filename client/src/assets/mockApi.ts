@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { dummyActivityLogs, dummyFoodLogs, dummyUser } from '../assets/assets';
 import type { ActivityEntry, FoodEntry, UserData } from './types';
 
@@ -158,7 +160,7 @@ const mockApi = {
     }
   },
   imageAnalysis: {
-    analyze: async (_formData: any) => {
+    analyze: async () => {
       await delay(1500);
       const foods = [
         { name: 'Apple', calories: 95 },

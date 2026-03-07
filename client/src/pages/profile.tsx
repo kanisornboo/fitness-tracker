@@ -7,6 +7,7 @@ import Card from '@/components/ui/Card';
 import { api } from '@/configs/api';
 import { useAppContext } from '@/context/app-context';
 import { useTheme } from '@/context/theme-context';
+import { profileFormSchema } from '@/lib/schemas';
 import {
   Calendar,
   FlameIcon,
@@ -37,7 +38,7 @@ const Profile = () => {
     weight: user?.weight || 0
   });
 
-  const fetchUserData = () => {
+  const fetchUserData = useCallback(() => {
     if (user) {
       setFormData({
         age: user.age || 0,
@@ -48,9 +49,18 @@ const Profile = () => {
         dailyCalorieIntake: user.dailyCalorieIntake || 0
       });
     }
-  };
+  }, [user]);
 
   const handleSaveChanges = async () => {
+    const validationResult = profileFormSchema.safeParse({
+      ...formData,
+      height: formData.height > 0 ? formData.height : undefined
+    });
+    if (!validationResult.success) {
+      toast.error(validationResult.error.issues[0].message);
+      return;
+    }
+
     try {
       const updates = {
         ...formData,
@@ -73,7 +83,7 @@ const Profile = () => {
     (() => {
       fetchUserData();
     })();
-  }, [user]);
+  }, [fetchUserData, user]);
 
   // if (!user || formData) return null;
 
@@ -126,7 +136,10 @@ const Profile = () => {
           {/* card title */}
           <div className="flex items-center gap-4 mb-6">
             <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-              <UserIcon aria-hidden="true" className="size-6 text-emerald-500 dark:text-emerald-400" />
+              <UserIcon
+                aria-hidden="true"
+                className="size-6 text-emerald-500 dark:text-emerald-400"
+              />
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-800 dark:text-white">
@@ -323,7 +336,10 @@ const Profile = () => {
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               {/* food entries count */}
               <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <HamburgerIcon aria-hidden="true" className="size-6 text-slate-500 dark:text-slate-400" />
+                <HamburgerIcon
+                  aria-hidden="true"
+                  className="size-6 text-slate-500 dark:text-slate-400"
+                />
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -336,7 +352,10 @@ const Profile = () => {
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <FlameIcon aria-hidden="true" className="size-6 text-slate-500 dark:text-slate-400" />
+                <FlameIcon
+                  aria-hidden="true"
+                  className="size-6 text-slate-500 dark:text-slate-400"
+                />
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -349,7 +368,10 @@ const Profile = () => {
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <FlameIcon aria-hidden="true" className="size-6 text-slate-500 dark:text-slate-400" />
+                <FlameIcon
+                  aria-hidden="true"
+                  className="size-6 text-slate-500 dark:text-slate-400"
+                />
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -362,7 +384,10 @@ const Profile = () => {
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <FlameIcon aria-hidden="true" className="size-6 text-slate-500 dark:text-slate-400" />
+                <FlameIcon
+                  aria-hidden="true"
+                  className="size-6 text-slate-500 dark:text-slate-400"
+                />
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -375,7 +400,10 @@ const Profile = () => {
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <FlameIcon aria-hidden="true" className="size-6 text-slate-500 dark:text-slate-400" />
+                <FlameIcon
+                  aria-hidden="true"
+                  className="size-6 text-slate-500 dark:text-slate-400"
+                />
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -406,10 +434,14 @@ const Profile = () => {
             onClick={toggleTheme}
             variant="secondary"
             aria-pressed={theme === 'dark'}
-            aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+            aria-label={
+              theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
+            }
             className="w-full flex items-center justify-center gap-2 bg-linear-to-r from-emerald-500 to-emerald-400 dark:from-emerald-400 dark:to-emerald-500 text-white">
             <span aria-hidden="true" className="text-sm font-medium">
-              {theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+              {theme === 'light'
+                ? 'Switch to dark mode'
+                : 'Switch to light mode'}
             </span>
             <SunIcon aria-hidden="true" className="size-5" />
           </Button>

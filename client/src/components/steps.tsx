@@ -1,3 +1,4 @@
+import { ageStepSchema, bodyStepSchema, goalStepSchema } from '@/lib/schemas';
 import { api } from '@/configs/api';
 import {
   DumbbellIcon,
@@ -84,14 +85,36 @@ const Steps = () => {
 
   const handleNext = async () => {
     if (step === 1) {
-      if (!formData.age || formData.age < 15 || formData.age > 100) {
-        toast.error('Age is required and must be between 15 and 100');
+      const result = ageStepSchema.safeParse({ age: formData.age });
+      if (!result.success) {
+        toast.error(result.error.issues[0].message);
         return;
       }
     }
+
+    if (step === 2) {
+      const result = bodyStepSchema.safeParse({
+        weight: formData.weight,
+        height: formData.height > 0 ? formData.height : undefined
+      });
+      if (!result.success) {
+        toast.error(result.error.issues[0].message);
+        return;
+      }
+    }
+
     if (step < totalSteps) {
       setStep((prev) => (prev + 1) as Step);
     } else {
+      const goalResult = goalStepSchema.safeParse({
+        goal: formData.goal,
+        dailyCalorieIntake: formData.dailyCalorieIntake,
+        dailyCalorieBurn: formData.dailyCalorieBurn
+      });
+      if (!goalResult.success) {
+        toast.error(goalResult.error.issues[0].message);
+        return;
+      }
       const userData = {
         ...formData,
         age: formData.age,

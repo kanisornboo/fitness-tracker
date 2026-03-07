@@ -1,14 +1,6 @@
-import { DumbbellIcon, PersonStanding, Weight } from 'lucide-react';
+import { PersonStanding } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 import Steps from '../components/steps';
-
-type Step = 1 | 2 | 3;
-
-type GoalOption = {
-  value: 'lose' | 'maintain' | 'gain';
-  label: string;
-  icon: React.ElementType;
-};
 
 export const Onboarding = () => {
   return (

@@ -5,6 +5,7 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { api } from '@/configs/api';
 import { useAppContext } from '@/context/app-context';
+import { activityLogSchema } from '@/lib/schemas';
 import {
   ActivityIcon,
   DumbbellIcon,
@@ -21,7 +22,6 @@ const ActivityLog = () => {
   const { allActivityLogs, setAllActivityLogs } = useAppContext();
 
   const [activities, setActivities] = useState<ActivityEntry[]>([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<{
@@ -35,7 +35,6 @@ const ActivityLog = () => {
   });
 
   const loadActivities = useCallback(async () => {
-    setLoading(true);
     try {
       const todayActivities = allActivityLogs.filter((activity) => {
         if (!activity.createdAt) return false;
@@ -46,8 +45,6 @@ const ActivityLog = () => {
       setActivities(todayActivities);
     } catch (err) {
       setError((err as Error).message);
-    } finally {
-      setLoading(false);
     }
   }, [allActivityLogs, today]);
 
@@ -74,12 +71,13 @@ const ActivityLog = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData.name.trim() || formData.duration <= 0) {
-      return toast.error(
-        'Please fill in all fields and duration must be greater than 0'
-      );
+
+    const result = activityLogSchema.safeParse(formData);
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+      return;
     }
-    setLoading(true);
+
     try {
       const { data } = await api.post('/api/activity-logs', formData);
       setAllActivityLogs((prev) => [...prev, data]);
@@ -90,8 +88,6 @@ const ActivityLog = () => {
     } catch (err) {
       toast.error('Failed to add activity');
       setError((err as Error).message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -224,7 +220,11 @@ const ActivityLog = () => {
                 />
               </div>
 
-              {error && <p role="alert" className="text-red-500 text-sm mt-2">{error}</p>}
+              {error && (
+                <p role="alert" className="text-red-500 text-sm mt-2">
+                  {error}
+                </p>
+              )}
 
               <div className="flex gap-2 pt-2 justify-end">
                 <Button
@@ -312,7 +312,10 @@ const ActivityLog = () => {
                       aria-label={`Delete ${activity.name}`}
                       className="flex items-center gap-2 text-sm text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-red-500 rounded"
                       onClick={() => handleDelete(activity.documentId)}>
-                      <Trash2Icon aria-hidden="true" className="size-4 text-red-500 dark:text-slate-400" />
+                      <Trash2Icon
+                        aria-hidden="true"
+                        className="size-4 text-red-500 dark:text-slate-400"
+                      />
                     </button>
                   </div>
                 </div>
