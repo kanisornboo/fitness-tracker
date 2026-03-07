@@ -1,5 +1,5 @@
 import { Toaster } from 'react-hot-toast';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Loading from './components/loading';
 import { useAppContext } from './context/app-context';
 import ActivityLog from './pages/activity-log';
@@ -11,29 +11,29 @@ import { Onboarding } from './pages/onboarding';
 import Profile from './pages/profile';
 
 const App = () => {
-    const { user, isUserFetched, onboardingCompleted } = useAppContext();
+  const { user, isUserFetched, onboardingCompleted } = useAppContext();
 
-    if (!user) {
-        return isUserFetched ? <Login /> : <Loading />;
-    }
+  if (!user) {
+    return isUserFetched ? <Login /> : <Navigate to="/" />;
+  }
 
-    if (!onboardingCompleted) {
-        return isUserFetched ? <Onboarding /> : <Loading />;
-    }
+  if (!onboardingCompleted) {
+    return isUserFetched ? <Onboarding /> : <Navigate to="/" />;
+  }
 
-    return (
-        <>
-            <Toaster position="top-right" />
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<Dashboard />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/food-log" element={<FoodLog />} />
-                    <Route path="/activity-log" element={<ActivityLog />} />
-                </Route>
-            </Routes>
-        </>
-    );
+  return (
+    <>
+      <Toaster position="top-center" />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/food-log" element={<FoodLog />} />
+          <Route path="/activity-log" element={<ActivityLog />} />
+        </Route>
+      </Routes>
+    </>
+  );
 };
 
 export default App;

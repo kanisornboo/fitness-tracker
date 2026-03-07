@@ -1,17 +1,14 @@
+import { api } from '@/configs/api';
 import {
-  CheckIcon,
   DumbbellIcon,
   InfoIcon,
-  PersonStanding,
   TargetIcon,
   UserIcon,
-  Weight,
-  XIcon
+  Weight
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import mockApi from '../assets/mockApi';
-import type { ProfileFormData, User, UserData } from '../assets/types';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import type { ProfileFormData, UserData } from '../assets/types';
 import Button from '../assets/ui/Button';
 import Input from '../components/ui/Input';
 import { useAppContext } from '../context/app-context';
@@ -64,7 +61,6 @@ const goalOptions: GoalOption[] = [
 
 const Steps = () => {
   const [step, setStep] = useState<Step>(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const totalSteps = 3;
 
@@ -88,11 +84,13 @@ const Steps = () => {
 
   const handleNext = async () => {
     if (step === 1) {
-      if (!formData.age || formData.age < 1 || formData.age > 100) {
-        toast.error('Age must be between 1 and 100');
+      if (!formData.age || formData.age < 15 || formData.age > 100) {
+        toast.error('Age is required and must be between 15 and 100');
         return;
       }
-      setStep((prev) => Math.min(prev + 1, totalSteps) as Step);
+    }
+    if (step < totalSteps) {
+      setStep((prev) => (prev + 1) as Step);
     } else {
       const userData = {
         ...formData,
@@ -102,21 +100,24 @@ const Steps = () => {
         createdAt: new Date().toISOString()
       } as UserData;
 
-      localStorage.setItem(
-        'fitness-tracker-user-data',
-        JSON.stringify(userData)
-      );
-      await mockApi.user.update(
-        user?.id || '',
-        userData as unknown as Partial<UserData>
-      );
-      toast.success('User data updated successfully');
-      setOnboardingCompleted(true);
-      await fetchUser(user?.token ?? '');
+      localStorage.setItem('fitnessUser', JSON.stringify(userData));
+
+      try {
+        await api.put(`/api/users/${user?.id}`, userData as UserData, {
+          headers: { Authorization: `Bearer ${user?.token}` }
+        });
+        toast.success('User data updated successfully');
+        setOnboardingCompleted(true);
+        fetchUser(user?.token ?? '');
+      } catch (error: unknown) {
+        toast.error((error as Error).message);
+      }
     }
   };
 
   const handlePrevious = () => {
+    // if the step is 1, do not allow the user to go back
+    // Math.max is used to ensure the step is not less than 1
     setStep((prev) => Math.max(prev - 1, 1) as Step);
   };
 
@@ -125,10 +126,6 @@ const Steps = () => {
     updateField('dailyCalorieIntake', option.calories);
     updateField('dailyCalorieBurn', option.burn);
   };
-
-  useEffect(() => {
-    console.log({ formData });
-  }, [formData]);
 
   return (
     <>

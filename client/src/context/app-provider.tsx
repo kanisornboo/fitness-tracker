@@ -1,119 +1,172 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import mockApi from '../assets/mockApi';
 import type {
-    ActivityEntry,
-    AppContextType,
-    Credentials,
-    FoodEntry,
-    User
+  ActivityEntry,
+  AppContextType,
+  Credentials,
+  FoodEntry,
+  User
 } from '../assets/types';
+import { api } from '../configs/api';
 import { AppContext } from './app-context';
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-    const navigate = useNavigate();
-    const [user, setUser] = useState<User | null>(null);
-    const [isUserFetched, setIsUserFetched] = useState(false);
-    const [onboardingCompleted, setOnboardingCompleted] = useState(false);
-    const [allFoodLogs, setAllFoodLogs] = useState<FoodEntry[]>([]);
-    const [allActivityLogs, setAllActivityLogs] = useState<ActivityEntry[]>([]);
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [isUserFetched, setIsUserFetched] = useState(
+    localStorage.getItem('token') ? false : true
+  );
+  const [onboardingCompleted, setOnboardingCompleted] = useState(false);
+  const [allFoodLogs, setAllFoodLogs] = useState<FoodEntry[]>([]);
+  const [allActivityLogs, setAllActivityLogs] = useState<ActivityEntry[]>([]);
 
-    const login = async (credentials: Credentials) => {
-        const { data } = await mockApi.auth.login(credentials);
-        setUser({
-            ...data.user,
-            token: data.jwt
-        });
+  const login = async (credentials: Credentials) => {
+    try {
+      const { data } = await api.post('/api/auth/local', {
+        identifier: credentials.email,
+        password: credentials.password
+      });
 
-        if (data.user.age && data.user.weight && data.user.goal) {
-            setOnboardingCompleted(true);
+      setUser({ ...data?.user, token: data?.jwt });
+
+      if (data?.user?.age && data?.user?.weight && data?.user?.goal) {
+        setOnboardingCompleted(true);
+      }
+
+      localStorage.setItem('token', data?.jwt);
+      api.defaults.headers.common['Authorization'] = `Bearer ${data?.jwt}`;
+    } catch (error) {
+      toast.error((error as Error).message);
+      setUser(null);
+      setIsUserFetched(false);
+      setOnboardingCompleted(false);
+      setAllFoodLogs([]);
+      setAllActivityLogs([]);
+      localStorage.removeItem('token');
+      api.defaults.headers.common['Authorization'] = '';
+      navigate('/');
+    }
+  };
+
+  const signup = async (credentials: Credentials) => {
+    try {
+      // register the user
+      const response = await api.post('/api/auth/local/register', credentials);
+      const { data } = response;
+
+      // set the user to the state
+      setUser({ ...data?.user, token: data?.jwt });
+      // if the user is onboarded, set the onboarding completed to true
+      if (data?.user?.age && data?.user?.weight && data?.user?.goal) {
+        setOnboardingCompleted(true);
+      }
+
+      // set the token to the local storage
+      localStorage.setItem('token', data.jwt);
+
+      // set the token to the default headers
+      api.defaults.headers.common['Authorization'] = `Bearer ${data.jwt}`;
+    } catch (error) {
+      toast.error((error as Error).message);
+      console.error(error);
+    }
+  };
+
+  const fetchUser = async (token: string) => {
+    try {
+      const { data } = await api.get('/api/users/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setUser({ ...data, token });
+
+      if (data?.age && data?.weight && data?.goal) {
+        setOnboardingCompleted(true);
+      }
+
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } catch (error: any) {
+      toast.error(
+        (error as any).message || error?.response?.data?.error?.message
+      );
+    }
+
+    // set the user fetched to true after the user is fetched successfully
+    setIsUserFetched(true);
+  };
+
+  const fetchFoodLogs = async (token: string) => {
+    try {
+      const { data } = await api.get('/api/food-logs', {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-        localStorage.setItem('token', data.jwt);
-    };
+      });
+      setAllFoodLogs(data);
+    } catch (error) {
+      toast.error((error as Error).message);
+      setAllFoodLogs([]);
+    }
+  };
 
-    const signup = async (credentials: Credentials) => {
-        const { data } = await mockApi.auth.register(credentials);
-        setUser(data.user as User);
-
-        if (data.user.age && data.user.weight && data.user.goal) {
-            setOnboardingCompleted(true);
+  const fetchActivityLogs = async (token: string) => {
+    try {
+      const { data } = await api.get('/api/activity-logs', {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-        localStorage.setItem('token', data.jwt);
-    };
+      });
+      setAllActivityLogs(data);
+    } catch (error) {
+      toast.error((error as Error).message);
+      setAllActivityLogs([]);
+    }
+  };
 
-    const fetchUser = async (token: string) => {
-        const { data } = await mockApi.user.me();
-        setUser({
-            ...data.user,
-            token: token
-        });
+  const logout = useCallback(() => {
+    setUser(null);
+    setIsUserFetched(false);
+    setOnboardingCompleted(false);
+    setAllFoodLogs([]);
+    setAllActivityLogs([]);
+    localStorage.removeItem('token');
+    api.defaults.headers.common['Authorization'] = '';
+    navigate('/');
+  }, [navigate]);
 
-        if (data?.user?.age && data?.user?.weight && data?.user?.goal) {
-            setOnboardingCompleted(true);
-        }
-        setIsUserFetched(true);
-    };
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
 
-    const fetchFoodLogs = async () => {
-        try {
-            const { data } = await mockApi.foodLogs.list();
-            setAllFoodLogs(data as FoodEntry[]);
-        } catch (error) {
-            console.error(error);
-            setAllFoodLogs([]);
-        }
-    };
+    // why wrapping in anonymous function?
+    // to avoid the lint error of useCallback
+    void (async () => {
+      try {
+        await fetchUser(token);
+        await Promise.all([fetchFoodLogs(token), fetchActivityLogs(token)]);
+      } catch {
+        // logout the user if the fetchUser or fetchFoodLogs or fetchActivityLogs fails to fetch the data
+        logout();
+      }
+    })();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const fetchActivityLogs = async () => {
-        try {
-            const { data } = await mockApi.activityLogs.list();
-            setAllActivityLogs(data as ActivityEntry[]);
-        } catch (error) {
-            console.error(error);
-            setAllActivityLogs([]);
-        }
-    };
+  const value: AppContextType = {
+    user,
+    isUserFetched,
+    onboardingCompleted,
+    allFoodLogs,
+    allActivityLogs,
+    setUser,
+    login,
+    signup,
+    fetchUser,
+    logout,
+    setOnboardingCompleted,
+    setAllFoodLogs,
+    setAllActivityLogs
+  };
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            (async () => {
-                await fetchUser(token);
-                await fetchFoodLogs();
-                await fetchActivityLogs();
-            })();
-        } else {
-            setTimeout(() => {
-                setIsUserFetched(true);
-            }, 100);
-        }
-    }, [navigate]);
-
-    const logout = () => {
-        setUser(null);
-        setIsUserFetched(false);
-        setOnboardingCompleted(false);
-        setAllFoodLogs([]);
-        setAllActivityLogs([]);
-        localStorage.removeItem('token');
-        navigate('/');
-    };
-
-    const value: AppContextType = {
-        user,
-        isUserFetched,
-        onboardingCompleted,
-        allFoodLogs,
-        allActivityLogs,
-        setUser,
-        login,
-        signup,
-        fetchUser,
-        logout,
-        setOnboardingCompleted,
-        setAllFoodLogs,
-        setAllActivityLogs
-    };
-
-    return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

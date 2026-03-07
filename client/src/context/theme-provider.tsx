@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ThemeContext } from './theme-context';
+import { ThemeContext } from './theme-context.tsx';
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   // Get the theme from localStorage or the system preference
