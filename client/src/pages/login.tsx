@@ -152,7 +152,7 @@ export const Login = () => {
               <button
                 className="bg-transparent text-sm hover:bg-transparent active:scale-95 p-0 m-0 hover:underline"
                 onClick={() => setState('login')}>
-                Sign up
+                Sign in
               </button>
             </div>
           )}

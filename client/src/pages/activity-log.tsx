@@ -1,14 +1,13 @@
 import { quickActivities } from '@/assets/assets';
-import mockApi from '@/assets/mockApi';
 import { type ActivityEntry } from '@/assets/types';
 import Input from '@/assets/ui/Input';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
+import { api } from '@/configs/api';
 import { useAppContext } from '@/context/app-context';
 import {
   ActivityIcon,
   DumbbellIcon,
-  MedalIcon,
   PlusIcon,
   TimerIcon,
   Trash2Icon,
@@ -45,9 +44,8 @@ const ActivityLog = () => {
         );
       }) as ActivityEntry[];
       setActivities(todayActivities);
-    } catch (error) {
-      console.error(error);
-      setError((error as Error).message);
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setLoading(false);
     }
@@ -73,34 +71,25 @@ const ActivityLog = () => {
     (acc, activity) => acc + activity.duration,
     0
   );
-  const totalCalories = activities.reduce(
-    (acc, activity) => acc + activity.calories,
-    0
-  );
-
-  const totalActivities = activities.length;
-  const averageDuration = totalMinutes / totalActivities;
-  const averageCalories = totalCalories / totalActivities;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.name.trim() || formData.duration <= 0) {
       return toast.error(
-        'Please fill in all fields and duration must be greater than 0 and calories must be greater than 0'
+        'Please fill in all fields and duration must be greater than 0'
       );
     }
     setLoading(true);
     try {
-      const { data } = await mockApi.activityLogs.create({ data: formData });
+      const { data } = await api.post('/api/activity-logs', formData);
       setAllActivityLogs((prev) => [...prev, data]);
       setFormData({ name: '', duration: 0, calories: 0 });
       setError(null);
       setShowForm(false);
-      loadActivities();
       toast.success('Activity added successfully');
-    } catch (error) {
-      console.error(error);
-      setError((error as Error).message);
+    } catch (err) {
+      toast.error('Failed to add activity');
+      setError((err as Error).message);
     } finally {
       setLoading(false);
     }
@@ -115,26 +104,23 @@ const ActivityLog = () => {
   const handleDurationChange = (value: string | number) => {
     const duration = Number(value);
     const activity = quickActivities.find(
-      (activity) => activity.name.toLowerCase() === formData.name?.toLowerCase()
-    ) as { name: string; rate: number };
+      (a) => a.name.toLowerCase() === formData.name?.toLowerCase()
+    );
 
-    debugger;
     setFormData({
       ...formData,
-      duration: duration,
-      calories: duration * activity.rate
+      duration,
+      calories: activity ? duration * activity.rate : formData.calories
     });
   };
 
   const handleDelete = async (documentId: string) => {
     try {
-      await mockApi.activityLogs.delete(documentId);
+      await api.delete(`/api/activity-logs/${documentId}`);
       setAllActivityLogs((prev) =>
         prev.filter((activity) => activity.documentId !== documentId)
       );
-      loadActivities();
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error('Failed to delete activity');
     }
   };
@@ -302,9 +288,6 @@ const ActivityLog = () => {
                       <p className="text-sm font-medium text-slate-800 dark:text-slate-100 capitalize">
                         {activity.name}
                       </p>
-                      {/* <p className="text-sm text-slate-500 dark:text-slate-400">
-                        {activity.duration} minutes
-                      </p> */}
                       <p className="text-sm text-slate-500 dark:text-slate-400">
                         {new Date(activity?.createdAt || '').toLocaleTimeString(
                           'en-US',

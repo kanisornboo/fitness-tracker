@@ -1,6 +1,5 @@
 import { goalLabels, goalOptions } from '@/assets/assets';
-import mockApi from '@/assets/mockApi';
-import type { ProfileFormData, User, UserData } from '@/assets/types';
+import type { ProfileFormData, UserData } from '@/assets/types';
 import Button from '@/assets/ui/Button';
 import Input from '@/assets/ui/Input';
 import Select from '@/assets/ui/Select';
@@ -8,13 +7,11 @@ import Card from '@/components/ui/Card';
 import { api } from '@/configs/api';
 import { useAppContext } from '@/context/app-context';
 import { useTheme } from '@/context/theme-context';
-import { cn } from '@/lib/utils';
 import {
   Calendar,
   FlameIcon,
   HamburgerIcon,
   LogOutIcon,
-  MoonIcon,
   RulerIcon,
   ScaleIcon,
   SunIcon,
@@ -67,8 +64,7 @@ const Profile = () => {
         setIsEditing(false);
         fetchUser(user?.token || '');
       }
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error('An error occurred while updating your profile');
     }
   };
@@ -393,7 +389,7 @@ const Profile = () => {
             <Button
               onClick={logout}
               variant="danger"
-              className="w-full flex items-center justify-center gap-2 mt-4 bg-red-500 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-600 dark:hover:bg-red-800 focus:ring-red-400 text-white">
+              className="w-full flex items-center justify-center gap-2 mt-4 bg-red-500 dark:bg-red-900/20 text-white dark:text-red-400 hover:bg-red-600 dark:hover:bg-red-800 focus:ring-red-400">
               <LogOutIcon className="size-5" />
               <span className="text-sm font-medium">Logout</span>
             </Button>

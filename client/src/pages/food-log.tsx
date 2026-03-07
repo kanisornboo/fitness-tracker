@@ -69,9 +69,8 @@ const FoodLog = () => {
         return new Date(entry.createdAt).toISOString().split('T')[0] === today;
       }) as FoodEntry[];
       setEntries(foodEntries);
-    } catch (error) {
-      console.error(error);
-      setError((error as Error).message);
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setLoading(false);
     }
@@ -89,56 +88,42 @@ const FoodLog = () => {
     }
 
     try {
-      const { data } = await api.post('/api/food-logs', formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const { data } = await api.post('/api/food-logs', formData);
 
       setAllFoodLogs((prev) => [...prev, data]);
       setFormData({ name: '', calories: 0, mealType: '' });
       setShowForm(false);
-    } catch (error) {
-      console.error(error);
-      setError((error as Error).message);
+    } catch (err) {
+      setError((err as Error).message);
     }
   };
 
-  const handleQuickAdd = (
+  const handleQuickAdd = async (
     activityName: 'breakfast' | 'lunch' | 'dinner' | 'snack'
   ) => {
-    api.post(
-      '/api/food-logs',
-      {
+    try {
+      const { data } = await api.post('/api/food-logs', {
         name: activityName,
         calories: 0,
         mealType: activityName
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      }
-    );
+      });
+      setAllFoodLogs((prev) => [...prev, data]);
+    } catch {
+      toast.error('Failed to add food entry');
+    }
   };
 
   const handleDelete = async (documentId: string) => {
     try {
-      const confirm = window.confirm(
+      const confirmed = window.confirm(
         'Are you sure you want to delete this food entry?'
-      ) as boolean;
-      if (!confirm) return;
-      await api.delete(`/api/food-logs/${documentId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      );
+      if (!confirmed) return;
+      await api.delete(`/api/food-logs/${documentId}`);
       setAllFoodLogs((prev) =>
         prev.filter((entry) => entry.documentId !== documentId)
       );
-      // loadEntries();
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error('Failed to delete food entry');
     }
   };
@@ -174,8 +159,6 @@ const FoodLog = () => {
         return;
       }
 
-      // save result to the database
-      console.log({ response });
       const { data: newEntry } = await api.post('/api/food-logs', {
         name: response.data.result?.name || '',
         calories: response.data.result?.calories || 0,
@@ -191,8 +174,7 @@ const FoodLog = () => {
       }
 
       toast.success('Food entry added successfully');
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error('Failed to analyze image');
     } finally {
       setLoading(false);

@@ -14,9 +14,8 @@ export default {
 
     try {
       const result = await analyzeImage(filePath);
-      console.log({ result });
       return ctx.send({ success: true, result });
-    } catch (error) {
+    } catch {
       return ctx.internalServerError("Failed to analyze image");
     }
   },

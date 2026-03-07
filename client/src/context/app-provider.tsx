@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import type {
@@ -69,7 +69,6 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       api.defaults.headers.common['Authorization'] = `Bearer ${data.jwt}`;
     } catch (error) {
       toast.error((error as Error).message);
-      console.error(error);
     }
   };
 
@@ -81,18 +80,22 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
       setUser({ ...data, token });
 
-      if (data?.age && data?.weight && data?.goal) {
-        setOnboardingCompleted(true);
-      }
+      if (data?.age && data?.weight && data?.goal) setOnboardingCompleted(true);
 
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } catch (error: any) {
+      //api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } catch (error) {
+      const axiosError = error as {
+        response?: { data?: { error?: { message?: string } } };
+        message?: string;
+      };
       toast.error(
-        (error as any).message || error?.response?.data?.error?.message
+        axiosError?.response?.data?.error?.message ||
+          axiosError?.message ||
+          'Session expired'
       );
+      logout();
     }
 
-    // set the user fetched to true after the user is fetched successfully
     setIsUserFetched(true);
   };
 
@@ -124,16 +127,24 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const logout = useCallback(() => {
-    setUser(null);
-    setIsUserFetched(false);
-    setOnboardingCompleted(false);
-    setAllFoodLogs([]);
-    setAllActivityLogs([]);
-    localStorage.removeItem('token');
-    api.defaults.headers.common['Authorization'] = '';
-    navigate('/');
-  }, [navigate]);
+  const logout = async () => {
+    try {
+      await api.post('/api/auth/logout', undefined, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      localStorage.removeItem('token');
+      api.defaults.headers.common['Authorization'] = '';
+      navigate('/');
+      setUser(null);
+      setIsUserFetched(false);
+      setOnboardingCompleted(false);
+      setAllFoodLogs([]);
+      setAllActivityLogs([]);
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
