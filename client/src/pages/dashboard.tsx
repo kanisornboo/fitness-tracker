@@ -96,14 +96,16 @@ const Dashboard = () => {
           {getGreetingPhrase()},
         </p>
 
-        <h1 className="text-5xl font-black uppercase tracking-tighter leading-none bg-linear-to-br from-emerald-400 via-emerald-500 to-teal-600 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(16,185,129,0.35)]">
+        <h1 className="text-5xl font-black uppercase tracking-tighter leading-none bg-linear-to-br from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(16,185,129,0.35)]">
           {user?.username || 'Athlete'}
         </h1>
 
         {/* Motivation pill */}
-        <div className="mt-4 inline-flex items-center gap-2.5 rounded-full border border-emerald-500/25 bg-emerald-500/8 dark:bg-emerald-400/8 px-4 py-2 backdrop-blur-sm">
-          <span aria-hidden="true" className="text-lg leading-none">{motivationMessage?.emoji}</span>
-          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
+        <div className="mt-4 inline-flex items-center gap-2.5 rounded-full border border-blue-500/25 bg-blue-500/8 dark:bg-blue-400/8 px-4 py-2 backdrop-blur-sm">
+          <span aria-hidden="true" className="text-lg leading-none">
+            {motivationMessage?.emoji}
+          </span>
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">
             {motivationMessage?.text}
           </p>
         </div>
@@ -115,8 +117,8 @@ const Dashboard = () => {
         <Card className="shadow-lg col-span-2">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="size-10 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <HamburgerIcon className="size-6 text-emerald-500 dark:text-emerald-400" />
+              <div className="size-10 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
+                <HamburgerIcon className="size-6 text-blue-500 dark:text-blue-400" />
               </div>
               <div className="flex flex-col gap-1">
                 <p className="text-sm font-medium">Calories Consumed</p>
@@ -138,7 +140,7 @@ const Dashboard = () => {
 
           <div className="mt-4 flex items-center justify-between">
             <div
-              className={` px-3 py-1.5 rounded-lg ${remainingCalories < 0 ? 'bg-red-500/10 dark:bg-red-900/10' : 'bg-emerald-500/10 dark:bg-emerald-400/10'}`}>
+              className={` px-3 py-1.5 rounded-lg ${remainingCalories < 0 ? 'bg-red-500/10 dark:bg-red-900/10' : 'bg-blue-500/10 dark:bg-blue-400/10'}`}>
               <p className="text-sm">
                 {remainingCalories >= 0
                   ? `You have ${remainingCalories} kcal left`
@@ -156,8 +158,8 @@ const Dashboard = () => {
 
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="size-10 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
-                <FlameIcon className="size-6 text-emerald-500 dark:text-emerald-400" />
+              <div className="size-10 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
+                <FlameIcon className="size-6 text-blue-500 dark:text-blue-400" />
               </div>
               <div className="flex flex-col gap-1">
                 <p className="text-sm font-medium">Calories Burned</p>
@@ -166,7 +168,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-1 text-right">
               <p className="text-sm font-medium">Goal</p>
-              <p className="text-sm font-bold capitalize text-emerald-500 dark:text-emerald-400">
+              <p className="text-sm font-bold capitalize text-blue-500 dark:text-blue-400">
                 {goalLabels[user?.goal as 'lose' | 'maintain' | 'gain']}
               </p>
             </div>
@@ -233,7 +235,7 @@ const Dashboard = () => {
               lose: {
                 label: 'Lose Weight',
                 Icon: TrendingDownIcon,
-                color: 'emerald',
+                color: 'blue',
                 onTrack: netCalories <= DAILY_CALORIES_LIMIT,
                 statusText:
                   netCalories <= DAILY_CALORIES_LIMIT
@@ -265,7 +267,7 @@ const Dashboard = () => {
             const goal = user.goal as 'lose' | 'maintain' | 'gain';
             const cfg = goalConfig[goal];
             const GoalIcon = cfg.Icon;
-            const isGreen = cfg.color === 'emerald';
+            const isGreen = cfg.color === 'blue';
             const isBlue = cfg.color === 'blue';
 
             const ringMax = DAILY_CALORIES_LIMIT || 2000;
@@ -279,9 +281,9 @@ const Dashboard = () => {
                 {/* top row */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="goal-icon-pulse size-11 rounded-2xl bg-linear-to-br from-[#03C24F]/20 to-[#3342D3]/15 dark:from-[#03C24F]/25 dark:to-[#3342D3]/20 flex items-center justify-center shrink-0">
+                    <div className="goal-icon-pulse size-11 rounded-2xl bg-linear-to-br from-[#007AFF]/20 to-[#3342D3]/15 dark:from-[#007AFF]/25 dark:to-[#3342D3]/20 flex items-center justify-center shrink-0">
                       <GoalIcon
-                        className={`size-5 ${isGreen ? 'text-emerald-500 dark:text-emerald-400' : isBlue ? 'text-blue-500 dark:text-blue-400' : 'text-orange-500 dark:text-orange-400'}`}
+                        className={`size-5 ${isBlue ? 'text-blue-500 dark:text-blue-400' : 'text-orange-500 dark:text-orange-400'}`}
                       />
                     </div>
                     <div className="flex flex-col gap-0.5">
@@ -296,10 +298,10 @@ const Dashboard = () => {
 
                   {/* status chip */}
                   <span
-                    className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full ${cfg.onTrack ? 'bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400' : 'bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400'}`}>
+                    className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full ${cfg.onTrack ? 'bg-blue-500/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400' : 'bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400'}`}>
                     <span
                       aria-hidden="true"
-                      className={`size-1.5 rounded-full inline-block ${cfg.onTrack ? 'bg-emerald-500' : 'bg-red-500'}`}
+                      className={`size-1.5 rounded-full inline-block ${cfg.onTrack ? 'bg-blue-500' : 'bg-red-500'}`}
                     />
                     {cfg.statusText}
                   </span>
@@ -326,7 +328,11 @@ const Dashboard = () => {
                   </div>
 
                   {/* mini ring */}
-                  <svg aria-hidden="true" width="52" height="52" className="-rotate-90 shrink-0">
+                  <svg
+                    aria-hidden="true"
+                    width="52"
+                    height="52"
+                    className="-rotate-90 shrink-0">
                     <circle
                       cx="26"
                       cy="26"
@@ -343,7 +349,7 @@ const Dashboard = () => {
                       strokeWidth="5"
                       strokeDasharray={`${dash} ${circumference}`}
                       strokeLinecap="round"
-                      className={`transition-all duration-700 ${isGreen ? 'stroke-emerald-500' : isBlue ? 'stroke-blue-500' : 'stroke-orange-500'}`}
+                      className={`transition-all duration-700 ${isBlue ? 'stroke-blue-500' : 'stroke-orange-500'}`}
                     />
                   </svg>
                 </div>
@@ -353,9 +359,9 @@ const Dashboard = () => {
 
         {/* body metrics card */}
         {user && user.weight && (
-          <Card className="bg-emerald-500/10 dark:bg-emerald-400/10">
+          <Card className="bg-blue-500/10 dark:bg-blue-400/10">
             <div className="flex items-center gap-3 mb-6">
-              <div className="size-10 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+              <div className="size-10 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
                 <ScaleIcon className="size-6 text-indigo-500 dark:text-indigo-400" />
               </div>
               <div>
@@ -408,7 +414,7 @@ const Dashboard = () => {
                   {/* BMI Scale Visual */}
                   <div className="h-2 w-full bg-slate-900/10 dark:bg-slate-800 rounded-full overflow-hidden flex">
                     <div className="flex-1 bg-blue-400 opacity-30" />
-                    <div className="flex-1 bg-emerald-400 opacity-30" />
+                    <div className="flex-1 bg-blue-400 opacity-30" />
                     <div className="flex-1 bg-orange-400 opacity-30" />
                     <div className="flex-1 bg-red-400 opacity-30" />
                     {/* <div
@@ -437,7 +443,7 @@ const Dashboard = () => {
 
         {/* quick summary card */}
         <Card>
-          <h3 className="text-lg font-bold text-indigo-500 dark:text-indigo-400">
+          <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400">
             Today's Summary
           </h3>
 
@@ -470,7 +476,7 @@ const Dashboard = () => {
         </Card>
 
         <Card className="col-span-2">
-          <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-indigo-500 dark:text-indigo-400 flex items-center gap-2">
             <BarChartIcon className="size-4 text-blue-500 dark:text-blue-400" />
             Calories Chart
           </h3>

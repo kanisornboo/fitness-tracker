@@ -138,7 +138,7 @@ const ActivityLog = () => {
             <p className="text-sm text-slate-500 dark:text-slate-400">
               Active Time Today
             </p>
-            <p className="text-2xl font-semi  bold text-emerald-500 dark:text-blue-400">
+            <p className="text-2xl font-semi  bold text-blue-500 dark:text-blue-400">
               {totalMinutes.toLocaleString()} minutes
             </p>
           </div>
@@ -150,7 +150,7 @@ const ActivityLog = () => {
         {!showForm && (
           <div className="space-y-4">
             <Card>
-              <h3 className="text-lg font-bold text-indigo-500 dark:text-white">
+              <h3 className="text-lg font-bold text-blue-500 dark:text-white">
                 Quick Add
               </h3>
 
@@ -159,7 +159,7 @@ const ActivityLog = () => {
                   <button
                     key={activity.name}
                     onClick={() => handleQuickAdd(activity)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-700/80 dark:bg-green-900/80 text-white hover:bg-green-800 dark:hover:bg-green-800 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-700">
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-700/80 dark:bg-blue-900/80 text-white hover:bg-blue-800 dark:hover:bg-blue-800 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-700">
                     <activity.icon aria-hidden="true" size={18} />
                     <span className="text-base font-medium capitalize text-white">
                       {activity.name}
@@ -170,7 +170,7 @@ const ActivityLog = () => {
             </Card>
 
             <button
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-green-700/80 dark:bg-green-900/80 text-white hover:bg-green-800 dark:hover:bg-green-800 transition-colors duration-200 cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-blue-700/80 dark:bg-blue-900/80 text-white hover:bg-blue-800 dark:hover:bg-blue-800 transition-colors duration-200 cursor-pointer"
               onClick={() => setShowForm(true)}>
               <PlusIcon className="size-4 mr-2" />
               Add Activity
@@ -180,8 +180,8 @@ const ActivityLog = () => {
 
         {/* Add form section */}
         {showForm && (
-          <Card className="border-2 border-indigo-500 dark:border-indigo-400">
-            <h3 className="text-lg font-bold text-indigo-500 dark:text-indigo-400 mb-4">
+          <Card className="border-2 border-blue-500 dark:border-blue-400">
+            <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400 mb-4">
               New Activity
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
@@ -248,8 +248,8 @@ const ActivityLog = () => {
         {activities.length === 0 ? (
           <Card className="text-center py-12">
             <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center mx-auto mb-4">
-              <DumbbellIcon className="size-10 text-indigo-500 dark:text-indigo-400" />
-              <h3 className="text-lg font-bold text-indigo-500 dark:text-indigo-400">
+              <DumbbellIcon className="size-10 text-blue-500 dark:text-blue-400" />
+              <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400">
                 No activities logged today
               </h3>
               <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -264,11 +264,11 @@ const ActivityLog = () => {
         ) : (
           <Card className="text-center py-12">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-indigo-500/10 dark:bg-indigo-400/10 flex items-center justify-center">
-                <ActivityIcon className="size-6 text-indigo-500 dark:text-indigo-400" />
+              <div className="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
+                <ActivityIcon className="size-6 text-blue-500 dark:text-blue-400" />
               </div>
               <div className="flex flex-col gap-1">
-                <h3 className="text-lg font-bold text-indigo-500 dark:text-indigo-400">
+                <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400">
                   Today's Activities List
                 </h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -281,8 +281,8 @@ const ActivityLog = () => {
               {activities.map((activity) => (
                 <div key={activity.id} className="activity-entry-item">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-500/10 dark:bg-indigo-400/10 flex items-center justify-center">
-                      <TimerIcon className="size-4 text-indigo-500 dark:text-indigo-400" />
+                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
+                      <TimerIcon className="size-4 text-blue-500 dark:text-blue-400" />
                     </div>
                     <div className="flex flex-col gap-1">
                       <p className="text-sm font-medium text-slate-800 dark:text-slate-100 capitalize">
@@ -327,7 +327,7 @@ const ActivityLog = () => {
               <span className="text-sm font-medium text-slate-800 dark:text-slate-100">
                 Total Active Time
               </span>
-              <span className="text-sm font-medium text-emerald-500 dark:text-emerald-400">
+              <span className="text-sm font-medium text-blue-500 dark:text-blue-400">
                 {totalMinutes.toLocaleString()} minutes
               </span>
             </div>

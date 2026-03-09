@@ -1,14 +1,17 @@
 import logo from '@/assets/logo.svg';
+import { useAppContext } from '@/context/app-context';
 import { useTheme } from '@/context/theme-context';
 import { cn } from '@/lib/utils';
 import {
   ActivityIcon,
   HomeIcon,
+  LogOutIcon,
   PizzaIcon,
   SunIcon,
   UserIcon
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import Button from './ui/Button';
 
 const navItems = [
   { label: 'Home', icon: HomeIcon, path: '/' },
@@ -19,7 +22,7 @@ const navItems = [
 
 const Sidebar = () => {
   const { theme, toggleTheme } = useTheme();
-
+  const { logout } = useAppContext();
   return (
     <nav
       aria-label="Main navigation"
@@ -45,9 +48,9 @@ const Sidebar = () => {
               end={item.path === '/'}
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-2 p-4 rounded-xl transition-colors duration-200 hover:bg-emerald-500/10 dark:hover:bg-emerald-400/10 active:scale-[0.98] cursor-pointer text-slate-700 dark:text-slate-200',
+                  'flex items-center gap-2 p-4 rounded-xl transition-colors duration-200 hover:bg-blue-500/10 dark:hover:bg-blue-400/10 active:scale-[0.98] cursor-pointer text-slate-700 dark:text-slate-200',
                   isActive &&
-                    'bg-emerald-500/10 dark:bg-emerald-400/10 text-emerald-500 dark:text-emerald-400'
+                    'bg-blue-500/10 dark:bg-blue-400/10 text-blue-500 dark:text-blue-400'
                 )
               }>
               <item.icon aria-hidden="true" className="size-5" />
@@ -57,7 +60,14 @@ const Sidebar = () => {
         ))}
       </ul>
 
-      <div className="mt-auto border-t border-slate-100 dark:border-slate-800 pt-6">
+      <div className="mt-auto">
+        <Button variant="danger" className="w-full" onClick={logout}>
+          <LogOutIcon aria-hidden="true" className="size-5" />
+          <span className="text-sm font-medium">Logout</span>
+        </Button>
+      </div>
+
+      <div className="border-t border-slate-100 dark:border-slate-800 pt-6 mt-6">
         <button
           onClick={toggleTheme}
           aria-pressed={theme === 'dark'}
@@ -69,7 +79,7 @@ const Sidebar = () => {
           <span
             className={cn(
               'text-sm font-medium',
-              theme === 'light' ? 'text-emerald-500' : 'text-emerald-400'
+              theme === 'light' ? 'text-blue-500' : 'text-blue-400'
             )}>
             {theme === 'light' ? 'Light mode' : 'Dark mode'}
           </span>

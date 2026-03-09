@@ -135,10 +135,10 @@ const Profile = () => {
         <Card>
           {/* card title */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+            <div className="size-12 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
               <UserIcon
                 aria-hidden="true"
-                className="size-6 text-emerald-500 dark:text-emerald-400"
+                className="size-6 text-blue-500 dark:text-blue-400"
               />
             </div>
             <div>
@@ -227,7 +227,7 @@ const Profile = () => {
               <div className="space-y-4">
                 {/* age */}
                 <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
-                  <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+                  <div className="size-12 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
                     <Calendar
                       aria-hidden="true"
                       size={24}
@@ -247,7 +247,7 @@ const Profile = () => {
 
                 {/* weight */}
                 <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
-                  <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+                  <div className="size-12 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
                     <ScaleIcon
                       aria-hidden="true"
                       size={24}
@@ -268,7 +268,7 @@ const Profile = () => {
                 {/* height */}
                 {user?.height && user?.height !== 0 && (
                   <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
-                    <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+                    <div className="size-12 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
                       <RulerIcon
                         aria-hidden="true"
                         size={24}
@@ -289,7 +289,7 @@ const Profile = () => {
 
                 {/* goal */}
                 <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
-                  <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+                  <div className="size-12 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
                     <TargetIcon
                       aria-hidden="true"
                       size={24}
@@ -335,7 +335,7 @@ const Profile = () => {
 
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
               {/* food entries count */}
-              <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+              <div className="size-12 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
                 <HamburgerIcon
                   aria-hidden="true"
                   className="size-6 text-slate-500 dark:text-slate-400"
@@ -351,7 +351,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
-              <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+              <div className="size-12 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
                 <FlameIcon
                   aria-hidden="true"
                   className="size-6 text-slate-500 dark:text-slate-400"
@@ -367,7 +367,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
-              <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+              <div className="size-12 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
                 <FlameIcon
                   aria-hidden="true"
                   className="size-6 text-slate-500 dark:text-slate-400"
@@ -383,7 +383,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
-              <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+              <div className="size-12 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
                 <FlameIcon
                   aria-hidden="true"
                   className="size-6 text-slate-500 dark:text-slate-400"
@@ -399,7 +399,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl transition-colors duration-200">
-              <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center">
+              <div className="size-12 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center">
                 <FlameIcon
                   aria-hidden="true"
                   className="size-6 text-slate-500 dark:text-slate-400"
@@ -437,7 +437,7 @@ const Profile = () => {
             aria-label={
               theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
             }
-            className="w-full flex items-center justify-center gap-2 bg-linear-to-r from-emerald-500 to-emerald-400 dark:from-emerald-400 dark:to-emerald-500 text-white">
+            className="w-full flex items-center justify-center gap-2 bg-linear-to-r from-blue-500 to-blue-400 dark:from-blue-400 dark:to-blue-500 text-white">
             <span aria-hidden="true" className="text-sm font-medium">
               {theme === 'light'
                 ? 'Switch to dark mode'

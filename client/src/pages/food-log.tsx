@@ -1,12 +1,12 @@
 import { mealTypeOptions, quickActivitiesFoodLog } from '@/assets/assets';
 import type { FoodEntry } from '@/assets/types';
-import { foodLogSchema } from '@/lib/schemas';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
 import { api } from '@/configs/api';
 import { useAppContext } from '@/context/app-context';
+import { foodLogSchema } from '@/lib/schemas';
 import {
   Loader2Icon,
   PlusIcon,
@@ -204,7 +204,7 @@ const FoodLog = () => {
             <p className="text-sm text-slate-500 dark:text-slate-400">
               Today's Total
             </p>
-            <p className="text-2xl font-semi  bold text-emerald-500 dark:text-emerald-400">
+            <p className="text-2xl font-semi  bold text-blue-500 dark:text-blue-400">
               {totalCalories.toLocaleString()} kcal
             </p>
           </div>
@@ -233,8 +233,10 @@ const FoodLog = () => {
                           | 'snack'
                       )
                     }
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-700/80 dark:bg-green-900/80 text-white hover:bg-green-800 dark:hover:bg-green-800 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-700">
-                    <span aria-hidden="true" className="text-lg">{activity.emoji}</span>
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-700/80 dark:bg-blue-900/80 text-white hover:bg-blue-800 dark:hover:bg-blue-800 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-700">
+                    <span aria-hidden="true" className="text-lg">
+                      {activity.emoji}
+                    </span>
                     <span className="text-base font-medium">
                       {activity.name}
                     </span>
@@ -247,14 +249,14 @@ const FoodLog = () => {
             <div className="flex flex-row gap-2 justify-center">
               <Button
                 variant="primary"
-                className="w-1/2   text-white hover:bg-green-800 dark:hover:bg-green-800 transition-colors duration-200 cursor-pointer"
+                className="w-1/2 text-white bg-indigo-500 hover:bg-indigo-800 dark:hover:bg-indigo-800 transition-colors duration-200 cursor-pointer"
                 onClick={() => setShowForm(true)}>
                 <PlusIcon className="size-4 mr-2" />
                 Add Food Entry
               </Button>
               <Button
                 variant="primary"
-                className="w-1/2  text-white hover:bg-blue-800 dark:hover:bg-blue-800 transition-colors duration-200 cursor-pointer"
+                className="w-1/2  text-white bg-indigo-500 hover:bg-indigo-800 dark:hover:bg-indigo-800 transition-colors duration-200 cursor-pointer"
                 onClick={() => inputRef.current && inputRef.current.click()}>
                 {loading ? (
                   <Loader2Icon className="size-4 mr-2 animate-spin" />
@@ -275,7 +277,9 @@ const FoodLog = () => {
               />
 
               {error && (
-                <p role="alert" className="text-sm text-red-500 dark:text-red-400">
+                <p
+                  role="alert"
+                  className="text-sm text-red-500 dark:text-red-400">
                   Error: {error}
                 </p>
               )}
@@ -286,8 +290,8 @@ const FoodLog = () => {
         {/* add form section */}
         {showForm && (
           <div className="space-y-4 col-span-2">
-            <Card className="border-2 border-indigo-500 dark:border-indigo-400">
-              <h3 className="text-lg font-bold text-indigo-500 dark:text-indigo-400">
+            <Card className="border-2 border-blue-500 dark:border-blue-400">
+              <h3 className="text-lg font-bold text-blue-500 dark:text-blue-400">
                 Add Food Entry
               </h3>
               <form onSubmit={handleSubmit} className="space-y-4 mt-4">
@@ -339,7 +343,9 @@ const FoodLog = () => {
                     Cancel
                   </Button>
                   <Button
-                    disabled={loading || !foodLogSchema.safeParse(formData).success}
+                    disabled={
+                      loading || !foodLogSchema.safeParse(formData).success
+                    }
                     type="submit"
                     variant="primary"
                     className="flex-1">
@@ -375,7 +381,7 @@ const FoodLog = () => {
               <Card
                 key={mealType}
                 className="border-2 border-indigo-500 dark:border-indigo-400">
-                <h3 className="font-semibold text-slate-800 dark:text-white capitalize flex items-center gap-2 justify-between p-2 bg-indigo-500/10 dark:bg-indigo-400/10 rounded-lg mb-2">
+                <h3 className="font-semibold text-slate-800 dark:text-white capitalize flex items-center gap-2 justify-between p-2 bg-blue-500/10 dark:bg-blue-400/10 rounded-lg mb-2">
                   <div className="flex items-center gap-2">
                     {mealTypeOptions.find((option) => option.value === mealType)
                       ?.label || mealType}{' '}
@@ -408,7 +414,10 @@ const FoodLog = () => {
                             onClick={() =>
                               handleDelete(entry.documentId as string)
                             }>
-                            <Trash2Icon aria-hidden="true" className="size-4 text-red-500 dark:text-slate-400" />
+                            <Trash2Icon
+                              aria-hidden="true"
+                              className="size-4 text-red-500 dark:text-slate-400"
+                            />
                           </button>
                         </div>
                       </div>
