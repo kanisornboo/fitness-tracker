@@ -267,7 +267,6 @@ const Dashboard = () => {
             const goal = user.goal as 'lose' | 'maintain' | 'gain';
             const cfg = goalConfig[goal];
             const GoalIcon = cfg.Icon;
-            const isGreen = cfg.color === 'blue';
             const isBlue = cfg.color === 'blue';
 
             const ringMax = DAILY_CALORIES_LIMIT || 2000;
